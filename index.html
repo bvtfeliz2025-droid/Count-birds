@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Bird Counting Game</title>
+
+<link rel="manifest" href="manifest.json">
+
+<style>
+body{
+  margin:0;
+  overflow:hidden;
+  font-family:Arial;
+  text-align:center;
+  background:skyblue;
+}
+
+#menu{
+  position:absolute;
+  top:30%;
+  width:100%;
+}
+
+button{
+  padding:10px 20px;
+  margin:10px;
+  font-size:18px;
+  cursor:pointer;
+}
+
+.bird{
+  position:absolute;
+  font-size:35px;
+}
+
+#result{
+  display:none;
+  position:absolute;
+  top:40%;
+  width:100%;
+}
+</style>
+
+</head>
+<body>
+
+<div id="menu">
+<h1>🐦 Bird Counting Game</h1>
+<p>Select difficulty</p>
+
+<button onclick="start('easy')">Easy</button>
+<button onclick="start('normal')">Normal</button>
+<button onclick="start('hard')">Hard</button>
+<button onclick="start('extreme')">Extreme</button>
+</div>
+
+<div id="result">
+<h2>How many birds did you see?</h2>
+<input id="answer" type="number">
+<button onclick="check()">Check</button>
+<p id="message"></p>
+<br>
+<button onclick="goMenu()">Back to Menu</button>
+</div>
+
+<script>
+
+let totalBirds = 0;
+let spawned = 0;
+let finished = 0;
+let spawnDelay = 500;
+let maxGroup = 1;
+let speedMin = 3;
+let speedMax = 6;
+
+function start(mode){
+
+  document.getElementById("menu").style.display="none";
+
+  spawned = 0;
+  finished = 0;
+
+  if(mode=="easy"){
+    totalBirds = rand(10,15);
+    spawnDelay = 900;
+    maxGroup = 1;
+    speedMin = 2;
+    speedMax = 4;
+  }
+
+  if(mode=="normal"){
+    totalBirds = rand(15,25);
+    spawnDelay = 700;
+    maxGroup = 2;
+    speedMin = 3;
+    speedMax = 6;
+  }
+
+  if(mode=="hard"){
+    totalBirds = rand(20,40);
+    spawnDelay = 500;
+    maxGroup = 3;
+    speedMin = 5;
+    speedMax = 9;
+  }
+
+  if(mode=="extreme"){
+    totalBirds = rand(40,80);
+    spawnDelay = 300;
+    maxGroup = 5;
+    speedMin = 7;
+    speedMax = 12;
+  }
+
+  setTimeout(spawnLoop,1500);
+}
+
+function rand(a,b){
+  return Math.floor(Math.random()*(b-a+1))+a;
+}
+
+function createBird(){
+
+  if(spawned >= totalBirds) return;
+
+  spawned++;
+
+  let bird = document.createElement("div");
+  bird.className="bird";
+  bird.innerHTML="🐦";
+
+  bird.style.left="-50px";
+  bird.style.top=Math.random()*window.innerHeight*0.8+"px";
+
+  document.body.appendChild(bird);
+
+  let x=-50;
+  let speed = rand(speedMin,speedMax);
+
+  let fly = setInterval(()=>{
+
+    x += speed;
+    bird.style.left=x+"px";
+
+    if(x > window.innerWidth){
+      clearInterval(fly);
+      bird.remove();
+      finished++;
+
+      if(finished >= totalBirds){
+        document.getElementById("result").style.display="block";
+      }
+    }
+
+  },20);
+}
+
+function spawnLoop(){
+
+  let amount = rand(1,maxGroup);
+
+  for(let i=0;i<amount;i++){
+    createBird();
+  }
+
+  if(spawned < totalBirds){
+    setTimeout(spawnLoop, spawnDelay);
+  }
+}
+
+function check(){
+
+  let ans = document.getElementById("answer").value;
+  let msg = document.getElementById("message");
+
+  if(ans == totalBirds){
+    msg.textContent="Correct! 🎉 There were "+totalBirds+" birds.";
+  }else{
+    msg.textContent="Not quite 😅 There were "+totalBirds+" birds.";
+  }
+}
+
+function goMenu(){
+
+  document.querySelectorAll(".bird").forEach(b => b.remove());
+
+  document.getElementById("result").style.display="none";
+  document.getElementById("menu").style.display="block";
+
+  document.getElementById("answer").value="";
+  document.getElementById("message").textContent="";
+
+  spawned = 0;
+  finished = 0;
+}
+
+</script>
+
+</body>
+</html>
