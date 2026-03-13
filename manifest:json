@@ -1,0 +1,8 @@
+{
+  "name": "Bird Counting Game",
+  "short_name": "Bird Counter",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#87CEEB",
+  "theme_color": "#87CEEB"
+}
