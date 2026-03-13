@@ -53,12 +53,12 @@ button{
 </div>
 
 <div id="result">
-<h2>¿Cuántos pájaros viste?</h2>
+<h2>How many birds was in there?</h2>
 <input id="answer" type="number">
-<button onclick="check()">Comprobar</button>
+<button onclick="check()">Check</button>
 <p id="message"></p>
 <br>
-<button onclick="goMenu()">Volver al menú</button>
+<button onclick="goMenu()">Go back to menu</button>
 </div>
 
 <script>
@@ -172,9 +172,9 @@ function check(){
   let msg = document.getElementById("message");
 
   if(ans == totalBirds){
-    msg.textContent="¡Correcto! 🎉 Había "+totalBirds+" pájaros.";
+    msg.textContent="¡Correct! 🎉 there was "+totalBirds+" birds.";
   }else{
-    msg.textContent="No 😅 Había "+totalBirds+" pájaros.";
+    msg.textContent="No 😅 there was "+totalBirds+" birds.";
   }
 }
 
